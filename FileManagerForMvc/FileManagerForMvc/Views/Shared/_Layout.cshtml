@@ -1,0 +1,29 @@
+﻿<html lang="fa-IR">
+    <head>
+        <title>صفحه اصلی</title>
+        
+
+        @*<script src="~/Scripts/jquery-1.9.1.min.js"></script>*@
+        <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+        <link href="~/Content/bootstrap-rtl.min.css" rel="stylesheet" />
+        <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+        <script src="~/Scripts/bootstrap-rtl.min.js"></script>
+        <link href="~/Content/Site.css" rel="stylesheet" />
+        @*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>*@
+
+        <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+        <script src="~/Scripts/site.js"></script>
+        
+       
+    </head>
+@{
+    ViewBag.Title = "_Layout";
+}
+    <body>
+        <div id="div-modal1" style="font-family:Tahoma;font-size:12px;z-index: -10;"></div>
+        
+        @RenderBody()
+    
+
+    </body>
+</html>

@@ -1,0 +1,115 @@
+﻿@model FileManagerForMvc.DataAccess.Product
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";    
+}
+<script type="text/javascript">
+    function Result(result) {
+        if (result.status == true) {
+            //نمایش پیغام
+            //ShowMessage('success', result.message, "موفقیت");
+            alert('success');
+        } else {
+            //ShowMessage('warning', result.message, "خطا");
+            alert('faul');
+
+        }
+    }
+
+    function onLoginBegin() {
+        //BlockUI($('#btnSubmit'), $('#div-modal1'));
+    }
+
+    function onLoginComplete() {
+        //بعد از اتمام درخواست دوباره دکمه فعال می شود
+        //UnBlockUI($('#btnSubmit'), $('#div-modal1'));
+    }
+
+    $(document).ready(function () {
+        var formData = new FormData();
+        $('form').submit(function () {
+            var action = $(this).attr('action');
+            var formData = new FormData($(this).get(0));
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: action,
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: onLoginBegin,
+                complete: onLoginComplete,
+                success: Result,
+            });
+
+            return false;
+        });
+
+    });
+
+</script>
+
+<h2>Create</h2>
+
+@using (Ajax.BeginForm("Create", "Home", FormMethod.Post,
+    new AjaxOptions
+    {
+        HttpMethod = "post",
+        OnSuccess = "Result",
+        LoadingElementId = "Waiting",
+        OnBegin = "onLoginBegin",
+        OnComplete = "onLoginComplete",
+    },
+    new
+    {
+        encType = "multipart/form-data",
+        id = "attach-form"
+    }))
+{
+    <button id="btnSubmit" type="submit" class="btn btn-default">
+        <div style="display:none;float:right" id="Waiting">
+            @*<img src="~/Content/jqwidgets/styles/images/loader-small.gif" />*@
+        </div>
+        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true" />
+        <span class="t14b">
+            ذخیره
+        </span>
+    </button>
+    
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-3 controls">
+                @Html.LabelFor(model => model.File, new { @class = "control-label" })
+            </div>
+            <div class="col-lg-3 controls">
+                @Html.EditorFor(x => x.File)
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+
+    $("#btnSelect").click(function () {
+        OpenWindow('@Url.Action("Index", "FileManager")', 'new');
+    });
+
+    function OpenWindow(_url, _action, _id) {
+        $("#div-modal1").dialog({
+            height: "450",
+            width: "900",
+        });
+        //$("#div-modal1").dialog({
+        //    autoOpen: false
+        //});
+
+        switch (_action) {
+        case 'new':
+            openDialog(_url, _id, $('#div-modal1'));
+            break;
+        }
+    }
+</script>
+

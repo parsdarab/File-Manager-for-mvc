@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "مدیریت فایل ها";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+    //$(document).ready(function() {
+    $("#btnSelectedFile").click(function () {
+        var close = $('#div-modal1').dialog('close');
+        if (close != null) {
+            close.dialog('close');
+        }
+        getAddress('~/FileUploder/1.jpg');
+    });
+    //});
+
+</script>
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="row">
+
+            <div class="col-md-4">
+                <h4>
+                    @ViewBag.Title
+                </h4>
+            </div>
+
+            <div class="col-md-4">
+
+            </div>
+
+            <div style="text-align:left;font-family:t14b" class="col-md-4">
+                <h4>
+
+                    <button type="button" id="btnNew" class="btn btn-default">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true" />
+                        <span class="t14b">
+                            جدید
+                        </span>
+                    </button>
+
+                    <button type="button" id="btnDelete" class="btn btn-default">
+                        <span class="glyphicon glyphicon-minus" aria-hidden="true" />
+                        <span class="t14b">
+                            حذف
+                        </span>
+                    </button>
+
+                    <button type="button" id="btnSelectedFile" class="btn btn-default">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true" />
+                        <span class="t14b">
+                            انتخاب
+                        </span>
+                    </button>
+                </h4>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="panel-body">
+        <div id="dataTable">
+        </div>
+    </div>
+</div>
+
+
