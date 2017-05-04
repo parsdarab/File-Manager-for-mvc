@@ -1,7 +1,7 @@
 ﻿@model FileManagerForMvc.DataAccess.Product
 @{
     ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";    
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script type="text/javascript">
     function Result(result) {
@@ -50,7 +50,6 @@
 
 </script>
 
-<h2>Create</h2>
 
 @using (Ajax.BeginForm("Create", "Home", FormMethod.Post,
     new AjaxOptions
@@ -67,49 +66,65 @@
         id = "attach-form"
     }))
 {
-    <button id="btnSubmit" type="submit" class="btn btn-default">
-        <div style="display:none;float:right" id="Waiting">
-            @*<img src="~/Content/jqwidgets/styles/images/loader-small.gif" />*@
-        </div>
-        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true" />
-        <span class="t14b">
-            ذخیره
-        </span>
-    </button>
-    
-    <div class="form-group">
-        <div class="row">
-            <div class="col-lg-3 controls">
-                @Html.LabelFor(model => model.File, new { @class = "control-label" })
+
+    <br />
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-3">
+                    @*<img src='@Url.Content("~/Content/Image/BaseSystem/menu/4-7-Banner32.png")' />*@
+                    <span style="font-family:t14b;font-size:18px">
+                        مدیریت کالا
+                    </span>
+                </div>
+
+                <button id="btnSubmit" type="submit" class="btn btn-default">
+                    <div style="display:none;float:right" id="Waiting">
+                        @*<img src="~/Content/jqwidgets/styles/images/loader-small.gif" />*@
+                    </div>
+                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true" />
+                    <span class="t14b">
+                        ذخیره
+                    </span>
+                </button>
+                
+                <button type="button" onclick="document.location.href='@Url.Action("Index")';" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true" />
+                    <span class="t14b">انصراف</span>
+                </button>
+
             </div>
-            <div class="col-lg-3 controls">
-                @Html.EditorFor(x => x.File)
+        </div>
+
+        <div class="panel-body">
+            <div dir="rtl">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-3 controls">
+                            @Html.LabelFor(model => model.Caption, new { @class = "control-label" })
+                        </div>
+                        <div class="col-lg-3 controls">
+                            @Html.EditorFor(x => x.Caption)
+                        </div>
+                        <div class="col-lg-3 controls">
+                            @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                        </div>
+                        <div class="col-lg-3 controls">
+                            @Html.EditorFor(x => x.Description)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-3 controls">
+                            @Html.LabelFor(model => model.File, new { @class = "control-label" })
+                        </div>
+                        <div class="col-lg-3 controls">
+                            @Html.EditorFor(x => x.File)
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 }
-
-
-<script>
-
-    $("#btnSelect").click(function () {
-        OpenWindow('@Url.Action("Index", "FileManager")', 'new');
-    });
-
-    function OpenWindow(_url, _action, _id) {
-        $("#div-modal1").dialog({
-            height: "450",
-            width: "900",
-        });
-        //$("#div-modal1").dialog({
-        //    autoOpen: false
-        //});
-
-        switch (_action) {
-        case 'new':
-            openDialog(_url, _id, $('#div-modal1'));
-            break;
-        }
-    }
-</script>
-

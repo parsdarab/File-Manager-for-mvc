@@ -1,19 +1,41 @@
 ﻿@model HttpPostedFileBase
-@*@Html.TextBoxFor(model => model, new { type = "file" })*@
-@*@Html.HiddenFor(model => model)*@
+@*نمایش نام فایل انتخاب شده*@
+<span id="@(ViewData.TemplateInfo.HtmlFieldPrefix)"></span>
+@*مسیر فایل انتخابی*@
 <input type="hidden" id="@(ViewData.TemplateInfo.HtmlFieldPrefix)Path" name="@(ViewData.TemplateInfo.HtmlFieldPrefix)Path" />
-<script>
-    function getAddress(src) {
-        alert(src);
-        //http://stackoverflow.com/questions/6615541/how-to-get-models-field-name-in-custom-editor-template
-        $("#@(ViewData.TemplateInfo.HtmlFieldPrefix)Path").val(src);
-        //$("#texens").val("tinkumaster");
-    }
-</script>
 
-<button type="button" id="btnSelect" class="btn btn-default">
+<button type="button" id="btn@(ViewData.TemplateInfo.HtmlFieldPrefix)" class="btn btn-default">
     <span class="glyphicon glyphicon-file" aria-hidden="true" />
     <span class="t14b">
         انتخاب فایل
     </span>
 </button>
+
+<script>
+    //بعد از بسته شدن دیالوگ این تابع فراخوانی می شود
+    function getAddress(src) {
+        //http://stackoverflow.com/questions/6615541/how-to-get-models-field-name-in-custom-editor-template
+        //تنظیم مقادیر
+        $("#@(ViewData.TemplateInfo.HtmlFieldPrefix)Path").val(src);
+        $("#@(ViewData.TemplateInfo.HtmlFieldPrefix)").text(src);
+    }
+
+    $("#btn@(ViewData.TemplateInfo.HtmlFieldPrefix)").click(function () {
+        OpenWindow('@Url.Action("Index", "FileManager")', 'new');
+    });
+
+    function OpenWindow(_url, _action, _id) {
+        $("#div-modal1").dialog({
+            height: "450",
+            width: "900",
+        });
+        //$("#div-modal1").dialog({
+        //    autoOpen: false
+        //});
+        switch (_action) {
+            case 'new':
+                openDialog(_url, _id, $('#div-modal1'));
+                break;
+        }
+    }
+</script>

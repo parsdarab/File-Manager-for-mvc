@@ -1,0 +1,8 @@
+﻿@model List<FileManagerForMvc.ViewModel.ImageGalleryvm>
+
+
+@foreach (var item in Model)
+{
+    <img src="@item.Url" width="150" height="150" />
+    <input type='checkbox' name='Result' value='@item.Url' />
+}

@@ -1,17 +1,91 @@
-﻿@{
+﻿@model List<FileManagerForMvc.ViewModel.ImageGalleryvm>
+@{
     ViewBag.Title = "مدیریت فایل ها";
     //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <script>
     //$(document).ready(function() {
-    $("#btnSelectedFile").click(function () {
+
+    function RefreshProvideData() {
+        OpenWindow('@Url.Action("ProvideData", "FileManager", new { area = "" })', 'RefreshdataTable');
+    }
+
+    function OpenWindow(_url, _action, _id) {
+
+        switch (_action) {
+            case 'RefreshdataTable':
+                openForm(_url, _id, $('#divdataTable'));
+                break;
+        }
+    }
+
+    function closeDialog() {
         var close = $('#div-modal1').dialog('close');
         if (close != null) {
             close.dialog('close');
         }
-        getAddress('~/FileUploder/1.jpg');
+    }
+
+    $("#btnSelectedFile").click(function () {
+        var array = $.map($('input[name="Result"]:checked'), function (c) { return c.value; });
+
+        if (array.length == 0) {
+            alert("کاربر گرامی شما فایلی انتخاب نکردید");
+            return;
+        }
+
+        if (array.length != 1) {
+            alert("کاربر گرامی شما فقط می توانید یک فایل انتخاب نمایید");
+            return;
+        }
+
+
+        closeDialog();
+
+        getAddress(array[0]);
     });
+
+    $("#btnCancel").click(function () {
+        closeDialog();
+
+    });
+
+    $("#btnDelete").click(function () {
+        var array = $.map($('input[name="Result"]:checked'), function (c) { return c.value; });
+        debugger;
+        var Ids = [];
+        //var checkedRows = treeGrid.jqxTreeGrid('getCheckedRows');
+        for (var i = 0; i < array.length; i++) {
+            // get a row.
+            var rowData = array[i];
+            Ids.push(rowData);
+        }
+        //return Ids;
+        //var arr = array.split(',');
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("DeleteFile", "FileManager", new { Area = "" })',
+            data: JSON.stringify({
+                models: Ids,
+            }),
+            //data: { models: array },
+
+            statusCode: {
+                //ok
+                200: function (data) {
+                    debugger;
+                    if (data.status == true) {
+                        //ShowMessage('success', data.message, "موفقیت");
+                        alert(data.message);
+                        closeDialog();
+                    }
+                },
+            }
+        });
+
+    });
+
     //});
 
 </script>
@@ -21,40 +95,48 @@
     <div class="panel-heading">
         <div class="row">
 
-            <div class="col-md-4">
-                <h4>
-                    @ViewBag.Title
-                </h4>
+            <div style="font-size: 18px;direction: rtl" class="col-md-4">
+                @ViewBag.Title
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-2"></div>
 
-            </div>
+            <div style="text-align:left;font-family:t14b" class="col-md-6">
+                <button type="button" id="btnCancel" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true" />
+                    <span class="t14b">
+                        انصراف
+                    </span>
+                </button>
+                <button type="button" id="btnNew" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true" />
+                    <span class="t14b">
+                        جدید
+                    </span>
+                </button>
 
-            <div style="text-align:left;font-family:t14b" class="col-md-4">
-                <h4>
+                <button type="button" id="btnDelete" class="btn btn-default">
+                    <span class="glyphicon glyphicon-minus" aria-hidden="true" />
+                    <span class="t14b">
+                        حذف
+                    </span>
+                </button>
+                
+                <button type="button" onclick="RefreshProvideData()" class="btn btn-default">
+                    <span class="glyphicon glyphicon-refresh" aria-hidden="true" />
+                    <span class="t14b">
+                        بازخوانی
+                    </span>
+                </button>
 
-                    <button type="button" id="btnNew" class="btn btn-default">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true" />
-                        <span class="t14b">
-                            جدید
-                        </span>
-                    </button>
+                <button type="button" id="btnSelectedFile" class="btn btn-default">
+                    <span class="glyphicon glyphicon-file" aria-hidden="true" />
+                    <span class="t14b">
+                        انتخاب
+                    </span>
+                </button>
 
-                    <button type="button" id="btnDelete" class="btn btn-default">
-                        <span class="glyphicon glyphicon-minus" aria-hidden="true" />
-                        <span class="t14b">
-                            حذف
-                        </span>
-                    </button>
 
-                    <button type="button" id="btnSelectedFile" class="btn btn-default">
-                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true" />
-                        <span class="t14b">
-                            انتخاب
-                        </span>
-                    </button>
-                </h4>
             </div>
 
         </div>
@@ -62,7 +144,9 @@
     </div>
 
     <div class="panel-body">
-        <div id="dataTable">
+        <div id="divdataTable">
+
+            @Html.Partial("ProvideData", Model)
         </div>
     </div>
 </div>

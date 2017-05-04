@@ -53,3 +53,34 @@
     function CloseWindows(windowName) {
         $(windowName).closest('.ui-dialog-content').dialog('close');
     }
+
+    function openForm(url, Id, div) {
+        debugger;
+        $.ajax({
+            beforeSend: function () {
+                // Handle the beforeSend event
+                //BlockUI(null, div);
+            },
+            complete: function () {
+                // Handle the complete event
+                //UnBlockUI(null, div);
+            },
+
+            url: url,
+            type: "Get",
+            data: { id: Id },
+
+            statusCode: {
+                //ok
+                200: function (data) {
+                    div.html(data);
+                    //theDialog.dialog("open");
+                },
+                //Internal Server Error
+                500: function (data) {
+                    //ShowMessage('warning', data.responseJSON.message, "خطا");
+                },
+            }
+
+        });
+    }
